@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Huellitas | Equipo 10 · Registro de Mascotas y Solicitud de Adopción</title>
+<style>
+:root{--bg:#f4fbf6;--card:#fff;--tx:#1e293b;--mut:#64748b;--pri:#10b981;--pd:#059669;--pl:#d1fae5;--or:#f59e0b;--line:#e2e8f0;--err:#ef4444;--r:16px}
+body.oscuro{--bg:#0f1b17;--card:#18262f;--tx:#e8f1ee;--mut:#9bb0aa;--line:#2b3d46;--pl:#14352b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);line-height:1.55}
+header{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:1rem;padding:.8rem 1.5rem;flex-wrap:wrap}
+.logo{font-weight:800;font-size:1.4rem;margin-right:auto}.logo span{color:var(--pri)}
+nav{display:flex;gap:.3rem;flex-wrap:wrap}
+nav a{text-decoration:none;color:var(--mut);font-weight:600;padding:.45rem .9rem;border-radius:10px;font-size:.92rem}
+nav a:hover{background:var(--pl);color:var(--pd)}
+#tema{background:none;border:2px solid var(--line);border-radius:50%;width:2.3rem;height:2.3rem;cursor:pointer;font-size:1rem}
+.w{max-width:1100px;margin:0 auto;padding:0 1.2rem}
+.hero{margin:2rem 0}
+.hero-c{background:linear-gradient(135deg,#064e3b,#047857);color:#fff;border-radius:26px;padding:2.5rem 2rem;position:relative;overflow:hidden}
+.hero-c::after{content:'🐾';position:absolute;right:25px;bottom:-15px;font-size:110px;opacity:.12}
+.badge{display:inline-block;background:rgba(255,255,255,.16);padding:.3rem .9rem;border-radius:99px;font-size:.85rem;margin-bottom:.7rem}
+.hero-c h1{font-size:clamp(1.6rem,4.5vw,2.5rem);line-height:1.15;margin-bottom:.5rem}
+.hbtns{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.1rem}
+.btn{border:0;border-radius:12px;padding:.75rem 1.3rem;font:inherit;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:transform .15s,opacity .15s}
+.btn:hover{transform:translateY(-2px)}.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.b-g{background:var(--pri);color:#fff}.b-o{background:var(--or);color:#fff}.b-l{background:#fff3;color:#fff;border:2px solid #fff6}
+.b-n{background:var(--line);color:var(--tx)}.b-r{background:#fee2e2;color:#991b1b}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;margin-bottom:2rem}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:1.1rem;text-align:center}
+.stat b{display:block;font-size:2.1rem;color:var(--pri)}.stat span{color:var(--mut);font-size:.88rem}
+#estadoBox.est-ok{border-color:var(--pri)}#estadoBox.est-no{border-color:var(--err)}
+#estado{font-size:.85rem;font-weight:600;line-height:1.35}
+h2.sec{font-size:1.6rem;margin-bottom:.25rem}.sub{color:var(--mut);margin-bottom:1.1rem}
+section{margin-bottom:2.8rem}
+.tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+.tab{background:var(--card);border:2px solid var(--line);color:var(--tx);border-radius:12px;padding:.65rem 1.15rem;font:inherit;font-weight:700;cursor:pointer}
+.tab.on{background:var(--pri);border-color:var(--pri);color:#fff}
+.panel{display:none;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:1.6rem;box-shadow:0 10px 40px -15px #0002}
+.panel.on{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-bottom:1rem}
+.full{grid-column:1/-1}
+label.l{display:block;font-weight:700;font-size:.92rem;margin-bottom:.25rem}
+.req{color:var(--err)}
+input[type=text],input[type=tel],input[type=email],input[type=number],select,textarea{width:100%;font:inherit;padding:.7rem .85rem;border:2px solid var(--line);border-radius:11px;background:var(--bg);color:var(--tx)}
+input:focus,select:focus,textarea:focus{outline:3px solid #10b98155;border-color:var(--pri)}
+.malo{border-color:var(--err)!important}.bueno{border-color:#22c55e!important}
+.et{color:var(--err);font-size:.82rem;min-height:1.05rem}
+.cc{text-align:right;color:var(--mut);font-size:.8rem}
+.chk{display:flex;gap:.55rem;align-items:flex-start;cursor:pointer}.chk input{margin-top:.3rem;width:1.1rem;height:1.1rem}
+.rad{display:flex;gap:1.1rem;flex-wrap:wrap}.rad label{display:flex;gap:.35rem;align-items:center;cursor:pointer}
+.acts{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:.4rem}
+.alert{display:none;padding:.8rem 1rem;border-radius:11px;margin-bottom:1rem;border-left:6px solid;font-weight:600}
+.alert.show{display:block}.al-ok{background:#dcfce7;border-color:#22c55e;color:#14532d}.al-er{background:#fee2e2;border-color:var(--err);color:#7f1d1d}
+body.oscuro .al-ok{background:#14532d44;color:#86efac}body.oscuro .al-er{background:#7f1d1d44;color:#fca5a5}
+.chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.chip{background:var(--pl);color:var(--pd);border-radius:99px;padding:.25rem .8rem;font-weight:700;font-size:.85rem}
+.bar{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+.bar select{width:auto;min-width:150px}
+.tabla-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card);margin-bottom:1.2rem}
+table.datos{width:100%;border-collapse:collapse;font-size:.9rem;min-width:720px}
+table.datos th{background:var(--pl);color:var(--pd);font-weight:800;text-align:left;padding:.75rem .9rem;border-bottom:2px solid var(--line);white-space:nowrap}
+table.datos td{padding:.7rem .9rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.datos tr:last-child td{border-bottom:0}
+table.datos tr:hover td{background:var(--bg)}
+table.datos .acciones{white-space:nowrap}
+table.datos .btn-x{background:#fee2e2;color:#991b1b;border:0;border-radius:8px;padding:.35rem .65rem;font:inherit;font-weight:700;cursor:pointer;font-size:.82rem}
+table.datos .btn-x:hover{background:#fecaca}
+.vacio{color:var(--mut);font-style:italic;padding:1.8rem;text-align:center;background:var(--card);border:2px dashed var(--line);border-radius:14px}
+.guardado-ok{display:inline-flex;align-items:center;gap:.35rem;background:#dcfce7;color:#14532d;padding:.2rem .65rem;border-radius:99px;font-size:.78rem;font-weight:700;margin-left:.4rem}
+body.oscuro .guardado-ok{background:#14532d55;color:#86efac}
+footer{text-align:center;color:var(--mut);padding:2rem 1rem;border-top:1px solid var(--line);margin-top:1rem;font-size:.92rem}
+#toast{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%) translateY(140px);background:#064e3b;color:#fff;padding:.85rem 1.4rem;border-radius:12px;transition:transform .35s;z-index:99;max-width:90vw;text-align:center;font-weight:600;box-shadow:0 8px 24px #0004}
+#toast.show{transform:translateX(-50%) translateY(0)}
+@media(max-width:600px){.panel{padding:1.1rem}header{justify-content:center}.logo{margin:0}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">🐾 Huellitas</div>
+  <nav>
+    <a href="#inicio">Inicio</a>
+    <a href="#formularios">Formularios</a>
+    <a href="#animales">Animales registrados</a>
+  </nav>
+  <button id="tema" type="button" aria-label="Cambiar tema">🌙</button>
+</header>
+
+<div class="w">
+  <section class="hero" id="inicio">
+    <div class="hero-c">
+      <h1>Registro de Mascotas<br>y Solicitud de Adopción</h1>
+      <p>Formulario 1: <b>Registro de mascotas</b> · Formulario 2: <b>Solicitud de adopción</b></p>
+      <div class="hbtns">
+        <a class="btn b-g" href="#formularios" data-go="reg">🐶 Registrar mascota</a>
+        <a class="btn b-o" href="#formularios" data-go="ado">💌 Solicitar adopción</a>
+        <a class="btn b-l" href="#animales">📋 Ver tabla de registrados</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><b id="sM">0</b><span>Mascotas registradas</span></div>
+    <div class="stat"><b id="sS">0</b><span>Solicitudes de adopción</span></div>
+  </div>
+
+  <section id="formularios">
+    <h2 class="sec">Formularios</h2>
+    <p class="sub">Llena los campos obligatorios (*). Al guardar, los datos se muestran en la tabla de Animales registrados.</p>
+    <div class="tabs">
+      <button class="tab on" id="tReg" type="button">🐶 Registro de mascotas</button>
+      <button class="tab" id="tAdo" type="button">💌 Solicitud de adopción</button>
+    </div>
+
+    <!-- FORMULARIO 1 -->
+    <div class="panel on" id="pReg">
+      <div class="alert al-ok" id="okReg"></div>
+      <div class="alert al-er" id="erReg"></div>
+      <form id="fReg" novalidate>
+        <div class="grid">
+          <div class="f">
+            <label class="l">Nombre de la mascota <span class="req">*</span></label>
+            <input type="text" name="nombre" placeholder="Ej. Max, Luna…" autocomplete="off">
+            <div class="et"></div>
+          </div>
+          <div class="f">
+            <label class="l">Especie <span class="req">*</span></label>
+            <select name="especie">
+              <option value="">Selecciona…</option>
+              <option>Perro</option><option>Gato</option><option>Conejo</option><option>Ave</option><option>Otro</option>
+            </select>
+            <div class="et"></div>
+          </div>
+          <div class="f">
+            <label class="l">Raza</label>
+            <input type="text" name="raza" placeholder="Ej. Labrador, Mestizo…">
+            <div class="et"></div>
+          </div>
+          <div class="f">
+            <label class="l">Edad (años) <span class="req">*</span></label>
+            <input type="number" name="edad" min="0" max="30" step="0.1" placeholder="Ej. 3">
+            <div class="et"></div>
+          </div>
+          <div class="f">
+            <label class="l">Sexo <span class="req">*</span></label>
+            <div class="rad">
+              <label><input type="radio" name="sexo" value="Macho"> Macho</label>
+              <label><input type="radio" name="sexo" value="Hembra"> Hembra</label>
+            </div>
+            <div class="et"></div>
+          </div>
+          <div class="f">
+            <label class="l">Tamaño <span class="req">*</span></label>
+            <div class="rad">
+              <label><input type="radio" name="tamano" value="Pequeño"> Pequeño</label>
+              <label><input type="radio" name="tamano" value="Mediano"> Mediano</label>
+              <label><input type="radio" name="tamano" value="Grande"> Grande</label>
+            </div>
+            <div class="et"></div>
+          </div>
+          <div class="f">
+            <label class="l">Registrado por (nombre del dueño / responsable) <span class="req">*</span></label>
+            <input type="text" name="dueno" placeholder="Nombre de quien registra">
+            <div class="et"></div>
+          </div>
+          <div class="f">
+            <label class="l">Teléfono (10 dígitos) <span class="req">*</span></label>
+            <input type="tel" name="telefono" maxlength="10" placeholder="5512345678" inputmode="numeric">
+            <div class="et"></div>
+          </div>
+          <div class="f full">
+            <label class="l">Descripción / personalidad</label>
+            <textarea name="descripcion" id="descR" rows="3" maxlength="200" placeholder="Carácter, cuidados, historia…"></textarea>
+            <div class="cc"><span id="cR">0</span>/200</div>
+          </div>
+          <div class="f full">
+            <label class="chk"><input type="checkbox" name="vacunado"> Tiene vacunas al día</label>
+          </div>
+        </div>
+        <div class="acts">
+          <button class="btn b-g" type="submit" id="btnGuardarReg">💾 Guardar mascota</button>
+          <button class="btn b-n" type="reset">🧹 Limpiar</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- FORMULARIO 2 -->
+    <div class="panel" id="pAdo">
+      <div class="alert al-ok" id="okAdo"></div>
+      <div class="alert al-er" id="erAdo"></div>
+      <form id="fAdo" novalidate>
+        <div class="grid">
+          <div class="f">
+            <label class="l">Mascota a adoptar <span class="req">*</span></label>
+            <select name="mascota" id="selM"></select>
+            <small id="infoM" style="color:var(--mut);display:block;margin-top:.2rem"></small>
+            <div class="et"></div>
+          </div>
+          <div class="f">
+            <label class="l">Nombre completo del solicitante <span class="req">*</span></label>
+            <input type="text" name="solicitante" placeholder="Tu nombre y apellidos">
+            <div class="et"></div>
+          </div>
+          <div class="f">
+            <label class="l">Correo electrónico <span class="req">*</span></label>
+            <input type="email" name="correo" placeholder="ejemplo@correo.com">
+            <div class="et"></div>
+          </div>
+          <div class="f">
+            <label class="l">Teléfono (10 dígitos) <span class="req">*</span></label>
+            <input type="tel" name="telefono" maxlength="10" placeholder="5512345678" inputmode="numeric">
+            <div class="et"></div>
+          </div>
+          <div class="f">
+            <label class="l">Tipo de vivienda <span class="req">*</span></label>
+            <select name="vivienda">
+              <option value="">Selecciona…</option>
+              <option>Casa</option><option>Departamento</option><option>Rancho</option>
+            </select>
+            <div class="et"></div>
+          </div>
+          <div class="f">
+            <label class="l">¿Tienes otras mascotas?</label>
+            <div class="rad">
+              <label><input type="radio" name="otras" value="Sí"> Sí</label>
+              <label><input type="radio" name="otras" value="No" checked> No</label>
+            </div>
+            <div class="et"></div>
+          </div>
+          <div class="f full">
+            <label class="l">¿Por qué quieres adoptar? <span class="req">*</span></label>
+            <textarea name="motivo" id="descA" rows="4" maxlength="200" placeholder="Cuéntanos tu motivación (mín. 20 caracteres)"></textarea>
+            <div class="cc"><span id="cA">0</span>/200</div>
+            <div class="et"></div>
+          </div>
+          <div class="f full">
+            <label class="chk"><input type="checkbox" name="acepta"> Me comprometo a cuidar a la mascota de forma responsable. <span class="req">*</span></label>
+            <div class="et"></div>
+          </div>
+        </div>
+        <div class="acts">
+          <button class="btn b-o" type="submit" id="btnGuardarAdo">📨 Guardar solicitud</button>
+          <button class="btn b-n" type="reset">🧹 Limpiar</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- TABLA REAL DE ANIMALES REGISTRADOS -->
+  <section id="animales">
+    <h2 class="sec">📋 Animales registrados</h2>
+    <p class="sub">Tabla con la información registrada: nombre, especie, raza, edad, sexo, tamaño, dueño, teléfono, fecha y más.</p>
+
+    <div class="chips" id="chips"></div>
+
+    <div class="tabs">
+      <button class="tab on" id="lTabM" type="button">🐾 Mascotas (<span id="nM">0</span>)</button>
+      <button class="tab" id="lTabS" type="button">💌 Solicitudes (<span id="nS">0</span>)</button>
+    </div>
+
+    <div class="bar">
+      <select id="filtro" aria-label="Filtrar por especie">
+        <option value="">Todas las especies</option>
+      </select>
+    </div>
+
+    <!-- TABLA DE MASCOTAS -->
+    <div id="bloqueM">
+      <div class="tabla-wrap" id="tablaMwrap">
+        <table class="datos" id="tablaM">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Especie</th>
+              <th>Raza</th>
+              <th>Edad</th>
+              <th>Sexo</th>
+              <th>Tamaño</th>
+              <th>Vacunado</th>
+              <th>Registrado por</th>
+              <th>Teléfono</th>
+              <th>Fecha</th>
+              <th>Descripción</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tbM"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TABLA DE SOLICITUDES -->
+    <div id="bloqueS" style="display:none">
+      <div class="tabla-wrap" id="tablaSwrap">
+        <table class="datos" id="tablaS">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Solicitante</th>
+              <th>Mascota</th>
+              <th>Correo</th>
+              <th>Teléfono</th>
+              <th>Vivienda</th>
+              <th>Otras mascotas</th>
+              <th>Fecha</th>
+              <th>Motivo</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tbS"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="toast" role="status"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const EMO = { Perro: "🐶", Gato: "🐱", Conejo: "🐰", Ave: "🐦", Otro: "🐾" };
+  const ahora = () => new Date().toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" });
+  const nuevoId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+
+  let mascotas = [];
+  let solicitudes = [];
+  let modo = "mem";
+
+  function idb() {
+    return new Promise((res, rej) => {
+      if (!window.indexedDB) return rej(new Error("No IndexedDB"));
+      const q = indexedDB.open("huellitas_e10_v3", 1);
+      q.onupgradeneeded = () => {
+        if (!q.result.objectStoreNames.contains("kv")) q.result.createObjectStore("kv");
+      };
+      q.onsuccess = () => res(q.result);
+      q.onerror = () => rej(q.error);
+    });
+  }
+
+  async function cargar() {
+    try {
+      const db = await idb();
+      const v = await new Promise((res, rej) => {
+        const r = db.transaction("kv").objectStore("kv").get("datos");
+        r.onsuccess = () => res(r.result);
+        r.onerror = () => rej(r.error);
+      });
+      modo = "idb";
+      if (v && (Array.isArray(v.mascotas) || Array.isArray(v.solicitudes))) return v;
+    } catch (e) {}
+
+    try {
+      const raw = localStorage.getItem("e10datos_v3") || localStorage.getItem("e10datos_v2") || localStorage.getItem("e10datos");
+      if (raw) {
+        const v = JSON.parse(raw);
+        if (modo === "mem") modo = "ls";
+        if (v && (Array.isArray(v.mascotas) || Array.isArray(v.solicitudes))) return v;
+      }
+    } catch (e) {}
+
+    try {
+      const m = JSON.parse(localStorage.getItem("e10m") || "[]");
+      const s = JSON.parse(localStorage.getItem("e10s") || "[]");
+      if (m.length || s.length) {
+        if (modo === "mem") modo = "ls";
+        return { mascotas: m, solicitudes: s };
+      }
+    } catch (e) {}
+
+    return null;
+  }
+
+  async function guardar() {
+    const d = { mascotas, solicitudes, version: 3, guardado: new Date().toISOString() };
+
+    try {
+      const db = await idb();
+      await new Promise((res, rej) => {
+        const t = db.transaction("kv", "readwrite");
+        t.objectStore("kv").put(d, "datos");
+        t.oncomplete = () => res();
+        t.onerror = () => rej(t.error);
+      });
+      modo = "idb";
+      estado();
+      return true;
+    } catch (e) {}
+
+    try {
+      localStorage.setItem("e10datos_v3", JSON.stringify(d));
+      modo = "ls";
+      estado();
+      return true;
+    } catch (e) {
+      modo = "mem";
+      estado();
+      return false;
+    }
+  }
+
+  function estado() {
+    // Sin mensajes de estado visibles
+  }
+
+  if (navigator.storage && navigator.storage.persist) {
+    navigator.storage.persist().catch(() => {});
+  }
+
+  const btnT = $("#tema");
+  function aplicarTema(o) {
+    document.body.classList.toggle("oscuro", o);
+    btnT.textContent = o ? "☀️" : "🌙";
+  }
+  try { aplicarTema(localStorage.getItem("e10t") === "1"); } catch (e) {}
+  btnT.onclick = () => {
+    const o = !document.body.classList.contains("oscuro");
+    aplicarTema(o);
+    try { localStorage.setItem("e10t", o ? "1" : "0"); } catch (e) {}
+  };
+
+  function tab(n) {
+    ["Reg", "Ado"].forEach((k) => {
+      const activo = (k === "Reg" && n === "reg") || (k === "Ado" && n === "ado");
+      $("#p" + k).classList.toggle("on", activo);
+      $("#t" + k).classList.toggle("on", activo);
+    });
+  }
+  $("#tReg").onclick = () => tab("reg");
+  $("#tAdo").onclick = () => tab("ado");
+  $$("[data-go]").forEach((a) => a.addEventListener("click", () => tab(a.dataset.go)));
+
+  [["#descR", "#cR"], ["#descA", "#cA"]].forEach(([t, c]) => {
+    const a = $(t), s = $(c);
+    a.addEventListener("input", () => (s.textContent = a.value.length));
+  });
+
+  function aviso(id, msg, ok) {
+    ["ok", "er"].forEach((k) => $("#" + k + id).classList.remove("show"));
+    const el = $("#" + (ok ? "ok" : "er") + id);
+    el.innerHTML = msg;
+    el.classList.add("show");
+    if (ok) setTimeout(() => el.classList.remove("show"), 7000);
+  }
+
+  function toast(m) {
+    const t = $("#toast");
+    t.textContent = m;
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 3000);
+  }
+
+  function err(f, name, msg) {
+    const el = f.querySelector('[name="' + name + '"]');
+    if (!el) return;
+    const cont = el.closest(".f");
+    const et = cont ? cont.querySelector(".et") : null;
+    if (et) et.textContent = msg;
+    if (el.type !== "radio" && el.type !== "checkbox") el.classList.add("malo");
+  }
+  function limpiar(f) {
+    f.querySelectorAll(".et").forEach((e) => (e.textContent = ""));
+    f.querySelectorAll(".malo, .bueno").forEach((e) => e.classList.remove("malo", "bueno"));
+  }
+  function reiniciar(f) {
+    f.reset();
+    if (f.id === "fReg") $("#cR").textContent = "0";
+    if (f.id === "fAdo") $("#cA").textContent = "0";
+    limpiar(f);
+  }
+
+  const TEL = /^\d{10}$/;
+  const MAIL = /^[\w.\-]+@[\w.\-]+\.\w{2,}$/;
+
+  $$("input[name=telefono]").forEach((i) =>
+    i.addEventListener("input", () => (i.value = i.value.replace(/\D/g, "")))
+  );
+  $$("input[type=text],input[type=tel],input[type=email],input[type=number],textarea").forEach((i) =>
+    i.addEventListener("input", () => {
+      i.classList.remove("malo");
+      i.classList.toggle("bueno", i.value.trim() !== "");
+    })
+  );
+
+  // FORMULARIO 1
+  $("#fReg").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const f = e.target;
+    limpiar(f);
+    const d = Object.fromEntries(new FormData(f));
+    let n = 0;
+    const bad = (k, m) => { err(f, k, m); n++; };
+
+    if ((d.nombre || "").trim().length < 2) bad("nombre", "Mínimo 2 caracteres");
+    if (!d.especie) bad("especie", "Selecciona una especie");
+    if (d.edad === "" || Number(d.edad) < 0 || Number(d.edad) > 30) bad("edad", "Edad entre 0 y 30");
+    if (!d.sexo) bad("sexo", "Selecciona el sexo");
+    if (!d.tamano) bad("tamano", "Selecciona el tamaño");
+    if ((d.dueno || "").trim().length < 3) bad("dueno", "Escribe el nombre de quien registra");
+    if (!TEL.test(d.telefono || "")) bad("telefono", "Deben ser exactamente 10 dígitos");
+
+    if (n) {
+      aviso("Reg", "Revisa los " + n + " campo(s) marcados.", false);
+      return;
+    }
+
+    const btn = $("#btnGuardarReg");
+    btn.disabled = true;
+    btn.textContent = "Guardando…";
+
+    const reg = {
+      id: nuevoId(),
+      fecha: ahora(),
+      nombre: d.nombre.trim(),
+      especie: d.especie,
+      raza: (d.raza || "").trim() || "—",
+      edad: d.edad,
+      sexo: d.sexo,
+      tamano: d.tamano,
+      vac: !!d.vacunado,
+      desc: (d.descripcion || "").trim() || "—",
+      dueno: d.dueno.trim(),
+      telefono: d.telefono
+    };
+
+    mascotas.unshift(reg);
+    const ok = await guardar();
+    reiniciar(f);
+    pintar();
+
+    aviso("Reg", "✔ <b>" + esc(reg.nombre) + "</b> se guardó correctamente.<br>Aparece en la <b>tabla de Animales registrados</b>. Registrado por " + esc(reg.dueno) + " · " + esc(reg.fecha), true);
+    toast("🐾 Mascota guardada");
+    setTimeout(() => {
+      verLista("m");
+      $("#animales").scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 350);
+
+    btn.disabled = false;
+    btn.textContent = "💾 Guardar mascota";
+  });
+
+  // FORMULARIO 2
+  $("#fAdo").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const f = e.target;
+    limpiar(f);
+    const d = Object.fromEntries(new FormData(f));
+    let n = 0;
+    const bad = (k, m) => { err(f, k, m); n++; };
+
+    const m = mascotas.find((x) => x.id === d.mascota);
+    if (!m) bad("mascota", "Selecciona una mascota (primero regístrala)");
+    if ((d.solicitante || "").trim().length < 3) bad("solicitante", "Escribe tu nombre completo");
+    if (!MAIL.test(d.correo || "")) bad("correo", "Correo no válido");
+    if (!TEL.test(d.telefono || "")) bad("telefono", "Deben ser exactamente 10 dígitos");
+    if (!d.vivienda) bad("vivienda", "Selecciona el tipo de vivienda");
+    if ((d.motivo || "").trim().length < 20) bad("motivo", "Mínimo 20 caracteres");
+    if (!d.acepta) bad("acepta", "Debes aceptar el compromiso");
+
+    if (n) {
+      aviso("Ado", "Revisa los " + n + " campo(s) marcados.", false);
+      return;
+    }
+
+    const btn = $("#btnGuardarAdo");
+    btn.disabled = true;
+    btn.textContent = "Guardando…";
+
+    const s = {
+      id: nuevoId(),
+      fecha: ahora(),
+      mascotaId: m.id,
+      mascota: m.nombre,
+      solicitante: d.solicitante.trim(),
+      correo: d.correo.trim(),
+      telefono: d.telefono,
+      vivienda: d.vivienda,
+      otras: d.otras || "No",
+      motivo: d.motivo.trim()
+    };
+
+    solicitudes.unshift(s);
+    const ok = await guardar();
+    reiniciar(f);
+    pintar();
+
+    aviso("Ado", "✔ Solicitud de <b>" + esc(s.solicitante) + "</b> para adoptar a <b>" + esc(s.mascota) + "</b> guardada correctamente. Ya está en la tabla.", true);
+    toast("💌 Solicitud guardada");
+    setTimeout(() => {
+      verLista("s");
+      $("#animales").scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 350);
+
+    btn.disabled = false;
+    btn.textContent = "📨 Guardar solicitud";
+  });
+
+  $("#selM").addEventListener("change", () => {
+    const m = mascotas.find((x) => x.id === $("#selM").value);
+    $("#infoM").textContent = m
+      ? (EMO[m.especie] || "🐾") + " " + m.especie + " · " + m.edad + " año(s) · " + m.tamano
+      : "";
+  });
+
+  function pintar() {
+    const fl = $("#filtro").value;
+    const ms = mascotas.filter((m) => !fl || m.especie === fl);
+
+    const tbM = $("#tbM");
+    if (ms.length === 0) {
+      tbM.innerHTML = "";
+      $("#tablaMwrap").style.display = "none";
+    } else {
+      $("#tablaMwrap").style.display = "block";
+      tbM.innerHTML = ms.map((m, i) =>
+        "<tr>" +
+        "<td>" + (i + 1) + "</td>" +
+        "<td><b>" + esc(m.nombre) + "</b></td>" +
+        "<td>" + (EMO[m.especie] || "") + " " + esc(m.especie) + "</td>" +
+        "<td>" + esc(m.raza) + "</td>" +
+        "<td>" + esc(m.edad) + "</td>" +
+        "<td>" + esc(m.sexo) + "</td>" +
+        "<td>" + esc(m.tamano) + "</td>" +
+        "<td>" + (m.vac ? "Sí" : "No") + "</td>" +
+        "<td>" + esc(m.dueno) + "</td>" +
+        "<td>" + esc(m.telefono) + "</td>" +
+        "<td>" + esc(m.fecha) + "</td>" +
+        "<td>" + esc(m.desc) + "</td>" +
+        "<td class=\"acciones\"><button type=\"button\" class=\"btn-x\" data-del=\"m" + m.id + "\">Eliminar</button></td>" +
+        "</tr>"
+      ).join("");
+    }
+
+    const tbS = $("#tbS");
+    if (solicitudes.length === 0) {
+      tbS.innerHTML = "";
+      $("#tablaSwrap").style.display = "none";
+    } else {
+      $("#tablaSwrap").style.display = "block";
+      tbS.innerHTML = solicitudes.map((s, i) =>
+        "<tr>" +
+        "<td>" + (i + 1) + "</td>" +
+        "<td><b>" + esc(s.solicitante) + "</b></td>" +
+        "<td>" + esc(s.mascota) + "</td>" +
+        "<td>" + esc(s.correo) + "</td>" +
+        "<td>" + esc(s.telefono) + "</td>" +
+        "<td>" + esc(s.vivienda) + "</td>" +
+        "<td>" + esc(s.otras) + "</td>" +
+        "<td>" + esc(s.fecha) + "</td>" +
+        "<td>" + esc(s.motivo) + "</td>" +
+        "<td class=\"acciones\"><button type=\"button\" class=\"btn-x\" data-del=\"s" + s.id + "\">Eliminar</button></td>" +
+        "</tr>"
+      ).join("");
+    }
+
+    $("#nM").textContent = mascotas.length;
+    $("#nS").textContent = solicitudes.length;
+    $("#sM").textContent = mascotas.length;
+    $("#sS").textContent = solicitudes.length;
+
+    const cnt = {};
+    mascotas.forEach((m) => (cnt[m.especie] = (cnt[m.especie] || 0) + 1));
+    $("#chips").innerHTML = Object.entries(cnt)
+      .map(([k, v]) => "<span class=\"chip\">" + (EMO[k] || "🐾") + " " + esc(k) + ": " + v + "</span>")
+      .join("") || "";
+
+    const fo = $("#filtro");
+    const act = fo.value;
+    fo.innerHTML = "<option value=\"\">Todas las especies</option>" +
+      Object.keys(cnt).map((k) => "<option" + (k === act ? " selected" : "") + ">" + esc(k) + "</option>").join("");
+
+    const sel = $("#selM");
+    const cur = sel.value;
+    sel.innerHTML = "<option value=\"\">" + (mascotas.length ? "Selecciona una mascota…" : "Primero registra una mascota") + "</option>" +
+      mascotas.map((m) => "<option value=\"" + m.id + "\">" + esc(m.nombre) + " (" + esc(m.especie) + " · " + esc(m.edad) + " años)</option>").join("");
+    if (cur && mascotas.some((m) => m.id === cur)) sel.value = cur;
+    sel.dispatchEvent(new Event("change"));
+
+    estado();
+  }
+
+  $("#filtro").addEventListener("change", pintar);
+
+  function verLista(n) {
+    $("#bloqueM").style.display = n === "m" ? "" : "none";
+    $("#bloqueS").style.display = n === "s" ? "" : "none";
+    $("#filtro").style.display = n === "m" ? "" : "none";
+    $("#lTabM").classList.toggle("on", n === "m");
+    $("#lTabS").classList.toggle("on", n === "s");
+  }
+  $("#lTabM").onclick = () => verLista("m");
+  $("#lTabS").onclick = () => verLista("s");
+
+  document.addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-del]");
+    if (!b) return;
+    if (!confirm("¿Eliminar este registro?")) return;
+    const t = b.dataset.del[0];
+    const id = b.dataset.del.slice(1);
+    if (t === "m") {
+      mascotas = mascotas.filter((x) => x.id !== id);
+      solicitudes = solicitudes.filter((x) => x.mascotaId !== id);
+    } else {
+      solicitudes = solicitudes.filter((x) => x.id !== id);
+    }
+    await guardar();
+    pintar();
+    toast("Registro eliminado");
+  });
+
+  (async function () {
+    const d = await cargar();
+    if (d) {
+      mascotas = Array.isArray(d.mascotas) ? d.mascotas : [];
+      solicitudes = Array.isArray(d.solicitudes) ? d.solicitudes : [];
+    }
+    estado();
+    pintar();
+    if (mascotas.length || solicitudes.length) {
+      toast("Se cargaron " + mascotas.length + " mascota(s) y " + solicitudes.length + " solicitud(es)");
+    }
+  })();
+})();
+</script>
+</body>
+</html>
